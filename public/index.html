@@ -69,7 +69,7 @@ fetch('/api/themes').then(r => r.json()).then(themes => {
     const el = document.createElement('div');
     el.className = 'theme-card';
     el.innerHTML = `<div class="theme-name">${t.name}</div>
-                    <div class="theme-meta">${t.roundsCount} раунд(ов)</div>`;
+                    <div class="theme-meta">${t.rounds ? t.rounds.length : 0} раунд(ов)</div>`;
     el.onclick = () => {
       document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
