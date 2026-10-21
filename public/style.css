@@ -371,3 +371,11 @@ input[type="text"]:focus { border-color: var(--water-light); }
   color: var(--sand);
   margin-bottom: 6px;
 }
+
+.round-title {
+  text-align: center;
+  color: var(--white);
+  font-size: 1rem;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}

@@ -11,7 +11,7 @@ const io = new Server(server);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/themes', (req, res) => {
-  res.json(THEMES.map(t => ({ id: t.id, name: t.name, roundsCount: t.rounds.length })));
+  res.json(THEMES.map(t => ({ id: t.id, name: t.name, rounds: t.rounds.map(r => r.name) })));
 });
 
 const rooms = new Map();
@@ -29,6 +29,7 @@ function publicRoom(room) {
   return {
     code: room.code,
     themeName: room.themeName,
+    roundName: room.round.name,
     state: room.state,
     players: room.players.map(p => ({
       id: p.id, name: p.name, ready: p.ready, score: p.score
@@ -38,11 +39,11 @@ function publicRoom(room) {
 
 io.on('connection', (socket) => {
 
-  socket.on('createRoom', ({ name, themeId }, cb) => {
+  socket.on('createRoom', ({ name, themeId, roundName }, cb) => {
     const theme = THEMES.find(t => t.id === themeId);
     if (!theme) return cb({ error: 'Тема не найдена' });
 
-    const round = theme.rounds[Math.floor(Math.random() * theme.rounds.length)];
+    const round = theme.rounds.find(r => r.name === roundName) || theme.rounds[0];
     const code = makeCode();
 
     const room = {
@@ -197,6 +198,7 @@ function sendQuestion(room) {
     answers: q.a,
     duration: 40000,
     players: room.players.map(p => ({ id: p.id, name: p.name, score: p.score })),
+    roundName: room.round.name,
         explanation: q.e || ''
   });
 

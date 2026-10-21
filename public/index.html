@@ -25,6 +25,10 @@
 
     <label>Тема</label>
     <div id="themes" class="themes">Загрузка…</div>
+    <div id="roundContainer" style="display:none; margin-top: 15px;">
+      <label>Выберите раунд</label>
+      <select id="roundSelect" style="width: 100%; padding: 14px; border-radius: 10px; background: rgba(10,37,64,0.7); color: white; border: 1px solid rgba(45,124,184,0.35); outline: none; font-size: 1rem;"></select>
+    </div>
 
     <button class="btn-primary" id="btnCreate">Создать комнату</button>
     <div class="error" id="createError"></div>
@@ -60,6 +64,7 @@ let selectedTheme = null;
 fetch('/api/themes').then(r => r.json()).then(themes => {
   const box = document.getElementById('themes');
   box.innerHTML = '';
+  window.themesData = themes;
   themes.forEach(t => {
     const el = document.createElement('div');
     el.className = 'theme-card';
@@ -69,6 +74,16 @@ fetch('/api/themes').then(r => r.json()).then(themes => {
       document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
       selectedTheme = t.id;
+      const rContainer = document.getElementById('roundContainer');
+      const rSelect = document.getElementById('roundSelect');
+      rSelect.innerHTML = '';
+      t.rounds.forEach(rName => {
+        const opt = document.createElement('option');
+        opt.value = rName;
+        opt.textContent = rName;
+        rSelect.appendChild(opt);
+      });
+      rContainer.style.display = 'block';
     };
     box.appendChild(el);
   });
@@ -81,7 +96,8 @@ document.getElementById('btnCreate').onclick = () => {
   if (!name) return err.textContent = 'Введите имя';
   if (!selectedTheme) return err.textContent = 'Выберите тему';
 
-  socket.emit('createRoom', { name, themeId: selectedTheme }, (res) => {
+  const roundName = document.getElementById('roundSelect').value;
+  socket.emit('createRoom', { name, themeId: selectedTheme, roundName }, (res) => {
     if (res.error) return err.textContent = res.error;
     sessionStorage.setItem('selfId', res.selfId);
     sessionStorage.setItem('code', res.room.code);

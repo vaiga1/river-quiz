@@ -25,6 +25,7 @@ function esc(s) {
 function renderLobby(room) {
   document.getElementById('roomCode').textContent = room.code;
   document.getElementById('lobbyTheme').textContent = room.themeName;
+  document.getElementById('lobbyRound').textContent = room.roundName || '';
   document.getElementById('playerCount').textContent = `(${room.players.length}/6)`;
 
   const list = document.getElementById('playersList');
@@ -81,7 +82,7 @@ socket.on('question', (data) => {
   showScreen('screen-question');
 
   document.getElementById('qProgress').textContent =
-    `Вопрос ${data.index + 1} / ${data.total}`;
+    `Вопрос ${data.index + 1} / ${data.total} • ${data.roundName}`;
   document.getElementById('questionText').textContent = data.text;
 
   const box = document.getElementById('answersBox');
@@ -147,7 +148,7 @@ socket.on('reveal', (data) => {
   if (lastQuestion) {
     document.getElementById('questionTextR').textContent = lastQuestion.text;
     document.getElementById('qProgressR').textContent =
-      `Вопрос ${lastQuestion.index + 1} / ${lastQuestion.total}`;
+      `Вопрос ${lastQuestion.index + 1} / ${lastQuestion.total} • ${lastQuestion.roundName}`;
   }
 
   const box = document.getElementById('answersBoxR');
