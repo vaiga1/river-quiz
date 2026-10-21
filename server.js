@@ -195,12 +195,13 @@ function sendQuestion(room) {
     total: room.round.questions.length,
     text: q.q,
     answers: q.a,
-    duration: 20000,
-    players: room.players.map(p => ({ id: p.id, name: p.name, score: p.score }))
+    duration: 40000,
+    players: room.players.map(p => ({ id: p.id, name: p.name, score: p.score })),
+        explanation: q.e || ''
   });
 
   if (room.timer) clearTimeout(room.timer);
-  room.timer = setTimeout(() => revealAnswer(room), 20000);
+  room.timer = setTimeout(() => revealAnswer(room), 40000);
 }
 
 function revealAnswer(room) {

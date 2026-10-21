@@ -165,6 +165,14 @@ socket.on('reveal', (data) => {
     });
   }
 
+  const expBox = document.getElementById('explanationBox');
+  const expText = document.getElementById('explanationText');
+  if (data.explanation) {
+    expText.textContent = data.explanation;
+    expBox.style.display = 'block';
+  } else {
+    expBox.style.display = 'none';
+  }
   renderScoreboardFromPlayers('scoreboardR', data.players);
   document.getElementById('btnNext').disabled = false;
   document.getElementById('nextHint').textContent = 'Нажмите «Далее», когда готовы';

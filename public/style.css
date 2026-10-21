@@ -355,3 +355,19 @@ input[type="text"]:focus { border-color: var(--water-light); }
   font-size: 1rem;
 }
 .final-item .score { font-weight: 700; color: var(--sand); font-size: 1.2rem; }
+
+.explanation-box {
+  background: rgba(233,196,106,0.1);
+  border-left: 4px solid var(--sand);
+  padding: 16px;
+  border-radius: 0 8px 8px 0;
+  margin-top: 20px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--white);
+}
+.explanation-title {
+  font-weight: 700;
+  color: var(--sand);
+  margin-bottom: 6px;
+}
